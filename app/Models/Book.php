@@ -9,10 +9,11 @@ class Book extends Model
 {
     use HasFactory;
 
+    // Jadvalga kiritilishi mumkin bo‘lgan ustunlar
     protected $fillable = [
-        'name',
-        'author',
-        'description',
-        'file',
+        'name',        // Kitob nomi
+        'author',      // Muallif ismi
+        'description', // Kitob haqida tavsif
+        'file',        // Kitob faylining yo‘li
     ];
 }

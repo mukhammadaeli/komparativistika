@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+// Laravel modullari va Spatie roli funksiyalarini ulash
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -11,39 +11,39 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, HasRoles;
+    use HasFactory, Notifiable, HasRoles; // Foydalanuvchi modeli uchun funksiyalar
 
     /**
-     * The attributes that are mass assignable.
+     * Massaviy ravishda to‘ldirilishi mumkin bo‘lgan atributlar.
      *
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+        'name',     // Foydalanuvchi ismi
+        'email',    // Foydalanuvchi emaili
+        'password', // Foydalanuvchi paroli
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
+     * Seriyalizatsiya uchun yashirilishi kerak bo‘lgan atributlar.
      *
      * @var array<int, string>
      */
     protected $hidden = [
-        'password',
-        'remember_token',
+        'password',        // Parolni yashirish
+        'remember_token',  // "Remember Me" tokenini yashirish
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * Kasting qilinishi kerak bo‘lgan atributlar.
      *
      * @return array<string, string>
      */
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            'email_verified_at' => 'datetime', // Email tasdiqlash sanasi
+            'password' => 'hashed',           // Parol avtomatik ravishda hashlanadi
         ];
     }
 }

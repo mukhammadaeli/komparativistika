@@ -9,70 +9,75 @@ use App\Models\User;
 class AuthController extends Controller
 {
     /**
-     * Show login page.
+     * Login sahifasini ko‘rsatish.
      */
     public function showLoginForm()
     {
-        return view('auth.login');
+        return view('auth.login'); // Login uchun Blade faylni ko‘rsatish
     }
 
     /**
-     * Handle login.
+     * Login jarayonini boshqarish.
      */
     public function login(Request $request)
     {
+        // Foydalanuvchi kiritgan ma'lumotlarni tekshirish
         $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
+            'email' => 'required|email', // Email talab qilinadi
+            'password' => 'required', // Parol talab qilinadi
         ]);
 
+        // Foydalanuvchini tizimga kiritish
         if (Auth::attempt($request->only('email', 'password'))) {
-            return redirect()->route('home');
+            return redirect()->route('home'); // Muvaffaqiyatli login bo‘lsa, asosiy sahifaga yo‘naltirish
         }
 
+        // Login muvaffaqiyatsiz bo‘lsa, xatolik qaytarish
         return back()->withErrors([
-            'email' => 'Неверный логин или пароль.',
+            'email' => 'Kiritilgan email yoki parol noto‘g‘ri.', // Xatolik xabari
         ]);
     }
 
     /**
-     * Show registration page.
+     * Ro‘yxatdan o‘tish sahifasini ko‘rsatish.
      */
     public function showRegisterForm()
     {
-        return view('auth.register');
+        return view('auth.register'); // Ro‘yxatdan o‘tish uchun Blade faylni ko‘rsatish
     }
 
     /**
-     * Handle registration.
+     * Ro‘yxatdan o‘tish jarayonini boshqarish.
      */
     public function register(Request $request)
     {
+        // Foydalanuvchi kiritgan ma'lumotlarni tekshirish
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:8|confirmed',
+            'name' => 'required|string|max:255', // Foydalanuvchi ismi talab qilinadi
+            'email' => 'required|email|unique:users,email', // Email yagona bo‘lishi kerak
+            'password' => 'required|string|min:8|confirmed', // Parol tasdiqlanishi va 8 belgidan kam bo‘lmasligi kerak
         ]);
 
-        // Create the user
+        // Yangi foydalanuvchini yaratish
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'name' => $request->name, // Foydalanuvchi ismi
+            'email' => $request->email, // Foydalanuvchi emaili
+            'password' => Hash::make($request->password), // Parolni hash qilish
         ]);
 
-        // Assign a default role to the user
-        $user->assignRole('user'); // Replace 'user' with your desired default role name
+        // Foydalanuvchiga standart rolni biriktirish
+        $user->assignRole('user'); // Standart rol (ehtiyojingizga qarab o‘zgartiring)
 
-        return redirect()->route('login')->with('success', 'Регистрация прошла успешно. Войдите в свой аккаунт.');
+        return redirect()->route('login')->with('success', 'Ro‘yxatdan o‘tish muvaffaqiyatli yakunlandi. Tizimga kiring.');
     }
 
     /**
-     * Handle logout.
+     * Logout jarayonini boshqarish.
      */
     public function logout(Request $request)
     {
+        // Foydalanuvchini tizimdan chiqarish
         Auth::logout();
-        return redirect()->route('login');
+        return redirect()->route('login'); // Login sahifasiga yo‘naltirish
     }
 }
