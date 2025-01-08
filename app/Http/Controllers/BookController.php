@@ -61,6 +61,28 @@ class BookController extends Controller
         return view('book', compact('book', 'books')); // Blade ko‘rinishga uzatish
     }
 
+
+    /**
+     * Kitobni yangilash.
+     */
+    public function update(Request $request, Book $book)
+    {
+        // Foydalanuvchi kiritgan ma'lumotlarni tekshirish
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'author' => 'required|string|max:255',
+            'description' => 'nullable|string',
+        ]);
+        // Kitob ma'lumotlarini yangilash
+        $book->update([
+            'name' => $request->name,
+            'author' => $request->author,
+            'description' => $request->description,
+        ]);
+
+        return redirect()->route('home')->with('success', 'Kitob muvaffaqiyatli yangilandi!');
+    }
+
     /**
      * Kitoblar ro‘yxatini ko‘rsatish.
      */
